@@ -9,18 +9,21 @@ WIDTH, HEIGHT = 800, 600
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
-
+shake_intensity = 0
+shake_duration = 0
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
 # Player properties
-player_pos = [WIDTH // 2, HEIGHT - 50]
+player_pos = [WIDTH // 2, HEIGHT - 50,]
 player_size = 50
-pre_post= []
+rect1 = pygame.Rect(player_pos[0], player_pos[1], 50, 50)
+
 
 # Enemy properties
 enemy_size = 50
 enemy_pos = [random.randint(0, WIDTH - enemy_size), 0]
+rect2 = pygame.Rect(enemy_pos[0],enemy_pos[1] , 50, 50)
 enemy_speed = 10
 
 score = 0
@@ -35,10 +38,10 @@ while not game_over:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         player_pos[0] -= 5  # Should move left
-        pre_post.append(player_pos)
+       
     if keys[pygame.K_RIGHT]:
         player_pos[0] += 5  # Should move right
-        pre_post.append(player_pos)
+        
 
     # Update enemy position
     enemy_pos[1] += enemy_speed
@@ -48,24 +51,38 @@ while not game_over:
         # The enemy should go back to the top with a new X position
         # but the code below is missing something to make it "restart"
         enemy_pos[1] = 0
+        enemy_pos[0] = random.randint(0, WIDTH - enemy_size)
         score += 1
+        enemy_speed += 1
         print(f"Score: {score}")
-        
-        
+    
 
     # --- BUG 3: Collision Detection ---
     # This logic is mathematically incorrect for rectangular collision
-    if (enemy_pos[0] == player_pos[0]) and (enemy_pos[1] == player_pos[1]):
+    if rect1.colliderect(rect2):
         print("Game Over!")
         game_over = True
 
     # Drawing
-    screen.fill((0, 0, 0))
+    game_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+
+    game_surface.fill((16, 16, 32, 10)) # RGBA: low alpha (15) creates the trail
+    
+    # --- Game Logic ---
+
+    # Blit the off-screen surface to the actual screen
+    screen.blit(game_surface, (0, 0))
+
+    # Update the display
+    pygame.display.flip()
     
     pygame.draw.rect(screen, RED, (enemy_pos[0], enemy_pos[1], enemy_size, enemy_size))
     pygame.draw.rect(screen, BLUE, (player_pos[0], player_pos[1], player_size, player_size))
+    
 
     pygame.display.update()
     clock.tick(30)
 
 pygame.quit()
+
+
