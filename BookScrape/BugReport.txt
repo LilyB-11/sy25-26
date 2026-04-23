@@ -1,0 +1,4 @@
+
+1.description of bug	2. date found	3. date fixed
+
+1. when outputs, the price prices with an accented A before the pound sign	2. 04-22-2026	3. 04-22-2026
