@@ -15,14 +15,14 @@ if response.status_code == 200:
     # Find all book containers
     books = soup.find_all('article', class_='product_pod')
     
-    found = False  # Track if the book is found
+    matches = []  # Store matching books
     
     # Loop through each book and extract information
     for book in books:
         # Extract the title
         title = book.h3.a['title']
         
-        if title.strip().lower() == choice:
+        if choice in title.strip().lower():
             # Extract the price
             price = book.find('p', class_='price_color').text
             
@@ -45,14 +45,20 @@ if response.status_code == 200:
             else:
                 genre = 'N/A'
             
-            # Print the information
-            print(f"Title: {title}")
-            print(f"Price: {price}")
-            print(f"Availability: {availability}")
-            print(f"Genre: {genre}")
-            print("-" * 40)
-            found = True
-            break  # Stop searching after finding the book
+            # Store the information in matches
+            matches.append({
+                "Title": title,
+                "Price": price,
+                "Availability": availability,
+                "Genre": genre
+            })
     
-    if not found:
+    if matches:
+        for match in matches:
+            print(f"Title: {match['Title']}")
+            print(f"Price: {match['Price']}")
+            print(f"Availability: {match['Availability']}")
+            print(f"Genre: {match['Genre']}")
+            print("-" * 40)
+    else:
         print("The book is not listed.")
