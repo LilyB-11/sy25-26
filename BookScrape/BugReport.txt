@@ -3,4 +3,6 @@
 
 1. when outputs, the price prices with an accented A before the pound sign	2. 04-22-2026	3. 04-22-2026
 
-1. when a book genre is not listed, prints default when it needed to print unavailable  2. 04-2202026   3.    04-22-2026
+1. when a book genre is not listed, prints default when it needed to print unavailable  2. 04-22-2026   3.04-22-2026
+
+1. the user must type the exact whole title, the code should let the user type some of the title   2. 04-27-2026  3. 04-27-2026
